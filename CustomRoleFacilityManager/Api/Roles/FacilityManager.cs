@@ -54,8 +54,24 @@ namespace CustomRoleFacilityManager.Api.Roles
                 Log.Debug("Facility Manager will not be spawned in this round.");
                 return;
             }
-            var player = Player.List.Where(x => x.Role.Type == Plugin.Singleton.Config.Role).ElementAt(Random.Range(0, Player.List.Count()));
-            Get(typeof(FacilityManager))?.AddRole(player);
+            if (Player.List.Count(x => x.Role.Type == Plugin.Singleton.Config.Role) == 0)
+            {
+                Log.Debug($"There is no one with role - {Plugin.Singleton.Config.Role}");
+                return;
+            }
+            Player ply;
+            var list = Player.List.Where(x => x.Role.Type == Plugin.Singleton.Config.Role);
+            if (list.Count() == 1)
+            {
+                ply = list.First();
+                Log.Debug($"There is only one person with role - {Plugin.Singleton.Config.Role}");
+            }
+            else
+            {
+                ply = list.ToList()[(Random.Range(0, list.Count()))];
+                Log.Debug($"There is more then one person with role - {Plugin.Singleton.Config.Role}");
+            }
+            Get(typeof(FacilityManager))?.AddRole(ply);
         }
     }
 }
