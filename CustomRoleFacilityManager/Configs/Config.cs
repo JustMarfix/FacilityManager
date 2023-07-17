@@ -13,6 +13,8 @@ namespace CustomRoleFacilityManager.Configs
         public bool IsEnabled { get; set; } = true;
         public bool Debug { get; set; } = false;
 
+        [Description("Hint duration")]
+        public float HintDuration { get; set; } = 5f;
         [Description("Role Id")]
         public uint CustomRoleId { get; set; } = 52;
         [Description("Max health of the Facility Manager")]
