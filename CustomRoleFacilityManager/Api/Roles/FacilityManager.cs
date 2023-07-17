@@ -69,7 +69,7 @@ namespace CustomRoleFacilityManager.Api.Roles
             else
             {
                 ply = list.ToList()[(Random.Range(0, list.Count()))];
-                Log.Debug($"There is more then one person with role - {Plugin.Singleton.Config.Role}");
+                Log.Debug($"There is more than one person with role - {Plugin.Singleton.Config.Role}");
             }
             Get(typeof(FacilityManager))?.AddRole(ply);
         }
