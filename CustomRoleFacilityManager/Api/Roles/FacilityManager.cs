@@ -4,6 +4,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Spawn;
 using Exiled.CustomRoles.API.Features;
+using MEC;
 using PlayerRoles;
 using UnityEngine;
 
@@ -15,7 +16,7 @@ namespace CustomRoleFacilityManager.Api.Roles
         public override int MaxHealth { get; set; } = Plugin.Singleton.Config.MaxHealth;
         public override string Name { get; set; } = Plugin.Singleton.Translation.CustomName;
         public override string Description { get; set; } = Plugin.Singleton.Translation.Description;
-        public override string CustomInfo { get; set; } = Plugin.Singleton.Translation.CustomInfo;
+        public override string CustomInfo { get; set; } = "";
         public override string ConsoleMessage { get; set; } = Plugin.Singleton.Translation.ConsoleMsg;
         public override bool IgnoreSpawnSystem { get; set; } = Plugin.Singleton.Config.IgnoreSpawnSystem;
         public override RoleTypeId Role { get; set; } = Plugin.Singleton.Config.Role;
@@ -36,10 +37,20 @@ namespace CustomRoleFacilityManager.Api.Roles
                 }
             }
         };
-
+        public override void AddRole(Player player)
+        {
+            base.AddRole(player);
+            Timing.CallDelayed(0.25f, () =>
+            {
+                player.InfoArea &= ~PlayerInfoArea.Role;
+                player.InfoArea |= PlayerInfoArea.Nickname;
+                player.InfoArea |= PlayerInfoArea.CustomInfo;
+                player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = Plugin.Singleton.Translation.CustomInfo;
+            });
+        }
         protected override void ShowMessage(Player player)
         {
-            player.ShowHint(Plugin.Singleton.Translation.Spawn + "\n" + Name + "\n" + Description,Plugin.Singleton.Config.HintDuration);
+            player.ShowHint(Plugin.Singleton.Translation.Spawn + "\n" + Description,Plugin.Singleton.Config.HintDuration);
         }
         protected override void SubscribeEvents()
         {
