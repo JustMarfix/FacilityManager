@@ -36,6 +36,11 @@ namespace CustomRoleFacilityManager.Api.Roles
                 }
             }
         };
+
+        protected override void ShowMessage(Player player)
+        {
+            player.ShowHint(Plugin.Singleton.Translation.Spawn + "\n" + Name + "\n" + Description,Plugin.Singleton.Config.HintDuration);
+        }
         protected override void SubscribeEvents()
         {
             base.SubscribeEvents();
